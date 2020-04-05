@@ -67,8 +67,8 @@ if(!$resultat)
 							</td>";
 							echo "<td>
 								<form name='canvipass' action='canviPassword.php' method='POST'>
-									<input type='hidden' name='noupass' value=''>
-									<input type='hidden' name='nif' value='".$fila['nif']."'>
+									<input type='hidden' name='nif' value='".$fila['nif']."'>								
+									<input type='password' name='noupassword' value=''>
 									<input type='submit' value='Nou password'>
 								</form>
 							</td>";

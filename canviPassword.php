@@ -1,15 +1,28 @@
 <?php
-include "conexion.php";
+session_start();
 
+//NIF es la clau primària de la taula, ens serveix per identificar el registre
+$nif  = filter_input(INPUT_POST,"nif");
+$noupassword  = filter_input(INPUT_POST,"noupassword");
 
-$consulta = "UPDATE usuari SET  password = '". $_POST['password'] ."' WHERE usuari = '" . $_POST['usuari'] . "'";
-$mysqli->query($consulta);
+include_once("db_utils.php");
 
-// NO ESTA PERMITIDO	header("Location: consultarUsuaris.php");//
+$connexio = obte_connexio();
 
+$consulta = "UPDATE usuaris SET contrasenya = '".md5($noupassword)."' WHERE nif = '" . $nif . "'";
+$resultat = mysqli_query($connexio, $consulta);
 
-
-
+echo $consulta;
+if (!$resultat) {
+    $error =  "Error en modificar l'usuari";
+    //@todo posar a tot arreu i no cal fer exit
+    echo mysqli_error($connexio);
+    echo "<div id='error'><h3>Error en modificar l'usuari.</h3></div>";
+    echo "<a id='tornar' href='index.php'>Tornar</a><br><br><br>";
+    exit();
+} else {
+    $message =  "Usuari modificat correctament";
+}
+include_once("consultarUsuaris.php");
 
 ?>
-
