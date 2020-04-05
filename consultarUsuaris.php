@@ -86,4 +86,3 @@ if(!$resultat)
 		</table>
 	</body>
 </html>
-
