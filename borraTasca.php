@@ -20,7 +20,6 @@ $resultat = mysqli_query($connexio, $consulta);
 
 if (!$resultat) {
     $error =  "Error en esborrar la tasca";
-    //@todo posar a tot arreu i no cal fer exit
     echo mysqli_error($connexio);
     echo "<div id='error'><h3>Error en esborrar la tasca.</h3></div>";
     echo "<a id='tornar' href='index.php'>Tornar</a><br><br><br>";
