@@ -4,7 +4,7 @@ session_start();
 // zona restringida a usuaris autenticats
 if (!isset($_SESSION["usuari"])) {
     echo "<div id='error'><h3>Zona restringida a usuaris autenticats.</h3></div>";
-    echo "<a id='tornar' href='index.php'>Tornar</a><br><br><br>";
+    echo "<a id='tornar' href='usuari.php'>Tornar</a><br><br><br>";
     exit();
 }
 
