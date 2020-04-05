@@ -1,6 +1,13 @@
 <?php
 session_start();
 
+// només admin pot accedir
+if (!$_SESSION["admin"]) {
+    echo "<div id='error'><h3>Zona restringida a usuaris administradors.</h3></div>";
+    echo "<a id='tornar' href='usuari.php'>Tornar</a><br><br><br>";
+    exit();
+}
+
 $nom = filter_input(INPUT_POST,"usuari");
 $nomcog = filter_input(INPUT_POST,"nom");
 $nif = filter_input(INPUT_POST,"nif");

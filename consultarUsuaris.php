@@ -1,6 +1,13 @@
 <?php
 session_start();
 
+// només admin pot accedir
+if (!$_SESSION["admin"]) {
+    echo "<div id='error'><h3>Zona restringida a usuaris administradors.</h3></div>";
+    echo "<a id='tornar' href='usuari.php'>Tornar</a><br><br><br>";
+    exit();
+}
+
 include_once("db_utils.php");
 $connexio = obte_connexio();
 
