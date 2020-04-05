@@ -12,7 +12,6 @@ $connexio = obte_connexio();
 $consulta = "UPDATE usuaris SET contrasenya = '".md5($noupassword)."' WHERE nif = '" . $nif . "'";
 $resultat = mysqli_query($connexio, $consulta);
 
-echo $consulta;
 if (!$resultat) {
     $error =  "Error en modificar l'usuari";
     //@todo posar a tot arreu i no cal fer exit

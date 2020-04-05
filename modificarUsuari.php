@@ -19,7 +19,6 @@ $consulta = "UPDATE usuaris SET nom = '".$nom."', nif = '".$nif."', admin = ".$a
 
 $resultat = mysqli_query($connexio, $consulta);
 
-echo $consulta;
 if (!$resultat) {
     $error =  "Error en modificar l'usuari";
     echo "<div id='error'><h3>Error en modificar l'usuari.</h3></div>";

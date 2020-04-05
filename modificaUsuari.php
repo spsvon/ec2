@@ -6,7 +6,6 @@ $nif = filter_input(INPUT_POST,"nif");
 include_once("db_utils.php");
 $connexio = obte_connexio();
 $consulta = "SELECT * FROM usuaris WHERE nif = '".$nif."'";
-echo $consulta;
 
 if (!$resultat = mysqli_query($connexio, $consulta)) {
     echo "<div id='error'><h3>Error en consultar l'usuari amb NIF $nif </h3></div>";
