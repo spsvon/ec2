@@ -22,7 +22,7 @@ if (!$resultat) {
     $error =  "Error en esborrar l'usuari";
     //@todo posar a tot arreu i no cal fer exit
     echo mysqli_error($connexio);
-    echo "<div id='error'><h3>Error en modificar l'usuari.</h3></div>";
+    echo "<div id='error'><h3>Error en esborrar l'usuari.</h3></div>";
     echo "<a id='tornar' href='index.php'>Tornar</a><br><br><br>";
     exit();
 } else {
