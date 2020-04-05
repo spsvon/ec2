@@ -34,9 +34,9 @@ $nif = filter_input(INPUT_POST,"nif");
             $consulta = "INSERT INTO tasques (nom, descripcio, nifPropietari) VALUES ('$nomtasca', '$descripcio', '$nif')";
 
             if ($resultat = mysqli_query($connexio, $consulta)){
-                echo "Tasca modificada correctament";
+                echo "Tasca inserida correctament";
             } else {
-                echo "No s'ha pogut afegir la tasca";
+                echo "No s'ha pogut inserir la tasca";
                 echo "<br> Detalls de l'Error: ". mysqli_error($connexio) . "<br>";
             }
         ?>
