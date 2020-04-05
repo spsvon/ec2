@@ -1,78 +1,95 @@
 <?php
-include "conexion.php";
+session_start();
 
-$consulta = "SELECT nom,nomCognom,nif,admin FROM usuaris";
-$resultat = $mysqli->query($consulta);
+// només admin pot accedir
+if (!$_SESSION["admin"]) {
+    echo "<div id='error'><h3>Zona restringida a usuaris administradors.</h3></div>";
+    echo "<a id='tornar' href='usuari.php'>Tornar</a><br><br><br>";
+    exit();
+}
+
+include_once("db_utils.php");
+$connexio = obte_connexio();
+
+$consulta = "SELECT nom, nomCognom, nif, admin FROM usuaris";
+$resultat = mysqli_query($connexio, $consulta);
 
 if(!$resultat)
 {
-	echo "No hi han usuaris";
-	exit;
-}	
-echo 'Usuari: ' . $_SESSION['usuari'] . '<br/><br/>';
-echo "<table>
-	<title> Llista d'usuaris: </title>
-	<thead>
-		<tr>
-		<th>Nom Usuari</th>
-		<th>Nom i Cognom</th>
-		<th>NIF</th>
-		<th>Administrador?</th>
-		<th>Canvi de Rol</th>
-		<th>Modificar</th>
-		<th>Modifica Password</th>
-		<th>Eliminar</th>
-		</tr>
-	<t/head>
-	<tbody>";
-
-while($fila = $resultat->fetch_assoc())
-{
-	
-	echo "<tr>".
-	"<td>".$fila['usuari']."</td>".
-	"<td>".$fila['nomcognom']."</td>".
-	"<td>".$fila['nif']."</td>".
-	"<td>".$fila['admin']."</td>".
-	
-	//botó canvi de rol
-	"<td>
-	<form action='canviRolUsuari.php' method='post'>
-	<input type='hidden' name='usuari' value='.$fila['admin'].'>
-	<input type='submit' value='Canvi Rol'>
-	</form>
-	</td>".
-	
-	//botó modificar
-	"<td>
-	<form action='modificarUsuari.php' method='post'>
-	<input type='hidden' name='usuari' value='.$fila['XXXXXX'].'>
-	<input type='submit' value='Modificar'>
-	</form>
-	</td>".
-	
-	//Modificar password
-	"<td>
-	<form action='canviPassword.php' method='post'>
-	<input type='hidden' name='usuari' value='.$fila['contrasenya'].'>
-	<input type='password' name='password'>
-	<input type='submit' value='Nou password'>
-	</form>
-	</td>".
-	
-	//botó borrar
-	"<td>
-	<form action='borraUsuari.php' method='post'>
-	<input type='hidden' name='usuari' value='.$fila['XXXXXX'].'>
-	<input type='submit' value='Borrar'>
-	</form>
-	</td>".
-	
-	"</tr>";
-	
+	echo "<div id='error'><h3>No hi han usuaris (error en SQL)</h3></div>";
+	echo "Detalls de l'Error: ". mysqli_error($connexio) . "<br>";
+	echo "<a id='tornar' href='usuari.php'>Tornar</a><br><br><br>";
+	exit();
 }
-
-echo "</tbody></table>";
-
 ?>
-
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>consultarUsuaris</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body>
+		<header>
+			<h1 id="titol_aplicacio">TODO List</h1>
+			<span id="usuari"><?php echo 'Usuari: ' . $_SESSION['usuari'] . '<br/><br/>';?></span>
+			<a id="tornar" href="usuari.php">Tornar</a><br><br><br>
+            <div id="message"><?php if (isset($message)) echo $message; ?></div><br>
+		</header>
+		<table>
+			<title> Llista d'usuaris: </title>
+			<thead>
+			<tr>
+				<th>Nom Usuari</th>
+				<th>Nom i Cognom</th>
+				<th>NIF</th>
+				<th>Administrador?</th>
+				<th>Canvi de Rol</th>
+				<th>Modificar</th>
+				<th>Modifica Password</th>
+				<th>Eliminar</th>
+			</tr>
+			</thead>
+			<tbody>
+			<?php
+				if( mysqli_num_rows($resultat) > 0){
+					while($fila = mysqli_fetch_array($resultat)) {
+						echo "<tr>";
+							echo "<td>".$fila['nom']."</td>";
+							echo "<td>".$fila['nomCognom']."</td>";
+							echo "<td>".$fila['nif']."</td>";
+							echo "<td>".$fila['admin']."</td>";
+							echo "<td>
+								<form name='canvirol' action='canviRolUsuari.php' method='POST'>								
+									<input type='hidden' name='admin' value='".$fila['admin']."'>
+									<input type='hidden' name='nif' value='".$fila['nif']."'>
+									<input type='submit' value='Canvi Rol'>
+								</form>
+							</td>";
+							echo "<td>
+								<form name='modifica' action='modificaUsuari.php' method='POST'>
+									<input type='hidden' name='nif' value='".$fila['nif']."'>
+									<input type='submit' value='Modifica'>
+								</form>
+							</td>";
+							echo "<td>
+								<form name='canvipass' action='canviPassword.php' method='POST'>
+									<input type='hidden' name='nif' value='".$fila['nif']."'>								
+									<input type='password' name='noupassword' value=''>
+									<input type='submit' value='Nou password'>
+								</form>
+							</td>";
+							echo "<td>
+								<form name='delete' action='borraUsuari.php' method='POST'>
+									<input type='hidden' name='nif' value='".$fila['nif']."'>
+									<input type='submit' value='Borrar'>
+								</form>
+							</td>";
+						echo "</tr>";
+					}
+				}
+			?>
+			</tbody>
+		</table>
+	</body>
+</html>

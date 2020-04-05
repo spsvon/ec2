@@ -50,7 +50,7 @@ function menuUser() {
     echo '<h2>Menu usuari</h2>';
     echo '<a href="consultaTasques.php">Consultar les meves tasques</a><br/>';
     echo '<a href="altaTasques.php">Crear tasca</a><br/>';
-    echo '<a href="Sortir.php">Sortir</a><br/>';
+    echo '<a href="sortir.php">Sortir</a><br/>';
 }
 ?>
 
@@ -65,7 +65,7 @@ function menuUser() {
         <header>
             <h1 id="titol_aplicacio">TODO List</h1>
             <span id="usuari"><?php echo 'Usuari: ' . $_SESSION['usuari'] . '<br/><br/>';?></span>
-            <a id="tornar" href="Usuari.php">Tornar</a><br><br><br>
+            <a id="tornar" href="usuari.php">Tornar</a><br><br><br>
         </header>
         <?php
         if ($_SESSION['admin'] == 1) {

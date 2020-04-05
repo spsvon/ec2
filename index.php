@@ -16,7 +16,7 @@
     echo "<img src=".$_SESSION['captcha']['image_src'].">";
 	session_write_close();
 ?>
-        <form name="logueo" method="POST" action="Usuari.php"> <br><br>
+        <form name="logueo" method="POST" action="usuari.php"> <br><br>
             <label for="captcha">Captcha:</label>
             <input type="text" name="captcha" id="captcha"><br><br>
             <label for="usuari">Usuari:</label>

@@ -17,3 +17,17 @@ function mostrar_error($connexio, $missatge) {
     echo "Detalls de l'Error: ". mysqli_error($connexio) . "<br>";
     echo "</div>";
 }
+
+function es_usuari_autenticat() {
+
+}
+
+function es_admin($usuari) {
+    if (isset($_SESSION['admin'])) {
+        if ($_SESSION['admin'] == "admin") {
+           return true;
+        }
+    } else {
+        $connexio = obte_connexio();
+    }
+}

@@ -1,5 +1,13 @@
 <?php
 session_start();
+
+// només admin pot accedir
+if (!$_SESSION["admin"]) {
+    echo "<div id='error'><h3>Zona restringida a usuaris administradors.</h3></div>";
+    echo "<a id='tornar' href='usuari.php'>Tornar</a><br><br><br>";
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -12,7 +20,7 @@ session_start();
         <header>
             <h1 id="titol_aplicacio">TODO List</h1>
             <span id="usuari"><?php echo 'Usuari: ' . $_SESSION['usuari'] . '<br/><br/>';?></span>
-            <a id="tornar" href="Usuari.php">Tornar</a><br><br><br>
+            <a id="tornar" href="usuari.php">Tornar</a><br><br><br>
         </header>
         <h2>Formulari d'Alta</h2>
         <form name="alta" method="POST" action="insertUsuari.php"> <br><br>
