@@ -2,82 +2,79 @@
 session_start();
 
 $captcha = filter_input(INPUT_POST,"captcha");
-$usuari = filter_input(INPUT_POST,"usuari");
-$pass = filter_input(INPUT_POST,"contrasenya");
-  
-if (! isset($_SESSION['usuari'])) {
+$usuari  = filter_input(INPUT_POST,"usuari");
+$pass    = filter_input(INPUT_POST,"contrasenya");
+
+if (!isset($_SESSION['usuari'])) {
     if ($captcha != $_SESSION['captcha']['code']) {
-        echo '<h3>Captcha Incorrecte.</h3>';
+        echo "<div id='error'><h3>Captcha Incorrecte.</h3></div>";
+        echo "<a id='tornar' href='index.php'>Tornar</a><br><br><br>";
         exit();
     }
 
-    $host     = 'localhost';
-    $user     = 'ioc';
-    $password = 'ioc';
-    $database = 'asx_mp09_eac2';
-    $connexio = mysqli_connect($host, $user, $password);
+    include("db_utils.php");
+    $connexio = obte_connexio();
 
-    if (!$connexio) {
-        echo '<h1>Error de connexio amb la Base de Dades</h1>';
-        exit();
-    }
-    mysqli_select_db($connexio, $database);
-    $consulta = "select * from usuaris where nom='$usuari' and contrasenya = '". md5($pass)."'";
+    $consulta = "SELECT * FROM usuaris WHERE nom='$usuari' AND contrasenya = '". md5($pass)."'";
 
-	$r=mysqli_query($connexio, $consulta);
-	if (! $r){
-	echo "usuari incorrecte";
-	exit();
+	$resultat = mysqli_query($connexio, $consulta);
+
+	// L'error aquí apareix si la consulta no està ben feta, si està ben feta retorna un resultat.
+	if (!$resultat){
+        echo "<div id='error'><h3>Usuari Incorrecte (error en SQL)</h3></div>";
+        echo "Detalls de l'Error: ". mysqli_error($connexio) . "<br>";
+        echo "<a id='tornar' href='index.php'>Tornar</a><br><br><br>";
+	    exit();
 	}
-    $resultat = mysqli_fetch_array($r);
 
-    if ($resultat && $usuari == $resultat['nom'] && $usuari) {
-	$_SESSION['user'] = $resultat['admin'];
-	$_SESSION['usuari'] = $resultat['nom'];
-    } else {
-        echo '<h1>Usuari Incorrecte</h1>';
+    $fila = mysqli_fetch_array($resultat);
+    // Aqui mirem si tenim resultat. Si l'usuari no es correcte retorna FALSE.
+    if (!$fila) {
+        echo "<div id='error'><h3>Usuari Incorrecte.</h3></div>";
+        echo "<a id='tornar' href='index.php'>Tornar</a><br><br><br>";
         exit();
+    } else {
+        $_SESSION['admin'] = $fila['admin'];
+        $_SESSION['usuari'] = $fila['nom'];
     }
 }
 
 function menuAdmin() {
-
-    echo 'Usuari: ' . $_SESSION['usuari'] . '<br/><br/>';
     echo '<h2>Menu administrador</h2>';
     echo '<a href="altaUsuari.php">Afegir Usuaris</a><br/>';
     echo '<a href="consultarUsuaris.php">Consultar Usuaris</a><br/>';
-    echo '<h2>Menu usuari</h2>';
-    echo '<a href="consultaTasques.php">Consultar les meves tasques</a><br/>';
-    echo '<a href="altaTasques.php">Crear tasca</a><br/>';
-    echo '<a href="sortir.php">Sortir</a><br/>';
+    menuUser();
 }
 
 function menuUser() {
-
-    echo 'Usuari: ' . $_SESSION['usuari'] . '<br/><br/>';
     echo '<h2>Menu usuari</h2>';
     echo '<a href="consultaTasques.php">Consultar les meves tasques</a><br/>';
     echo '<a href="altaTasques.php">Crear tasca</a><br/>';
-    echo '<a href="sortir.php">Sortir</a><br/>';
+    echo '<a href="Sortir.php">Sortir</a><br/>';
 }
 ?>
+
 <!DOCTYPE html>
 <html>
     <head>
         <title>EAC 2</title>
-        <meta charset="utf-8"/>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        <header>
+            <h1 id="titol_aplicacio">TODO List</h1>
+            <span id="usuari"><?php echo 'Usuari: ' . $_SESSION['usuari'] . '<br/><br/>';?></span>
+            <a id="tornar" href="Usuari.php">Tornar</a><br><br><br>
+        </header>
         <?php
-
-        if ($_SESSION['user'] == 1) {
-		menuAdmin();
-        } elseif (isset ($_SESSION['user'])) {
-		menuUser();
+        if ($_SESSION['admin'] == 1) {
+		    menuAdmin();
+        } elseif (isset ($_SESSION['usuari'])) {
+		    menuUser();
         } else {
             echo "No t'has autenticat";
         }
         ?>
     </body>
 </html>
-
