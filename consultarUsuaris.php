@@ -27,6 +27,7 @@ if(!$resultat)
 			<h1 id="titol_aplicacio">TODO List</h1>
 			<span id="usuari"><?php echo 'Usuari: ' . $_SESSION['usuari'] . '<br/><br/>';?></span>
 			<a id="tornar" href="usuari.php">Tornar</a><br><br><br>
+            <div id="message"><?php if (isset($message)) echo $message; ?></div><br>
 		</header>
 		<table>
 			<title> Llista d'usuaris: </title>
@@ -52,29 +53,28 @@ if(!$resultat)
 							echo "<td>".$fila['nif']."</td>";
 							echo "<td>".$fila['admin']."</td>";
 							echo "<td>
-								<form name='canvirol' action='canviRolUsuari.php' method='POST'>
+								<form name='canvirol' action='canviRolUsuari.php' method='POST'>								
 									<input type='hidden' name='admin' value='".$fila['admin']."'>
 									<input type='hidden' name='nif' value='".$fila['nif']."'>
 									<input type='submit' value='Canvi Rol'>
 								</form>
 							</td>";
 							echo "<td>
-								<form name='modifica' action='modificarUsuari.php' method='POST'>
-									<input type='hidden' name='modify' value=''>
+								<form name='modifica' action='modificaUsuari.php' method='POST'>
+									<input type='hidden' name='nif' value='".$fila['nif']."'>
 									<input type='submit' value='Modifica'>
 								</form>
 							</td>";
-
 							echo "<td>
 								<form name='canvipass' action='canviPassword.php' method='POST'>
 									<input type='hidden' name='noupass' value=''>
+									<input type='hidden' name='nif' value='".$fila['nif']."'>
 									<input type='submit' value='Nou password'>
 								</form>
 							</td>";
-
 							echo "<td>
 								<form name='delete' action='borraUsuari.php' method='POST'>
-									<input type='hidden' name='borra' value=''>
+									<input type='hidden' name='nif' value='".$fila['nif']."'>
 									<input type='submit' value='Borrar'>
 								</form>
 							</td>";
