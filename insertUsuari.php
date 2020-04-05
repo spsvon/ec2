@@ -21,7 +21,7 @@ $admin = filter_input(INPUT_POST,"admin", FILTER_VALIDATE_BOOLEAN, array("option
         <header>
             <h1 id="titol_aplicacio">TODO List</h1>
             <span id="usuari"><?php echo 'Usuari: ' . $_SESSION['usuari'] . '<br/><br/>';?></span>
-            <a id="tornar" href="Usuari.php">Tornar</a><br><br><br>
+            <a id="tornar" href="usuari.php">Tornar</a><br><br><br>
         </header>
         <h2>Formulari d'Alta</h2>
 <?php
