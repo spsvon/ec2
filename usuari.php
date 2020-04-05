@@ -36,6 +36,8 @@ if (!isset($_SESSION['usuari'])) {
     } else {
         $_SESSION['admin'] = $fila['admin'];
         $_SESSION['usuari'] = $fila['nom'];
+        //guardem el nif pq es l'identificador de l'usuari
+        $_SESSION['nif'] = $fila['nif'];
     }
 }
 
@@ -49,7 +51,7 @@ function menuAdmin() {
 function menuUser() {
     echo '<h2>Menu usuari</h2>';
     echo '<a href="consultaTasques.php">Consultar les meves tasques</a><br/>';
-    echo '<a href="altaTasques.php">Crear tasca</a><br/>';
+    echo '<a href="altaTasca.php">Crear tasca</a><br/>';
     echo '<a href="sortir.php">Sortir</a><br/>';
 }
 ?>
