@@ -59,11 +59,11 @@ if(!$resultat)
                         echo "<td>".$fila['nom']."</td>";
                         echo "<td>".$fila['descripcio']."</td>";
                         echo "<td>".$fila['nifPropietari']."</td>";
-                        echo "<td>".$fila['complert']."</td>";
+                        echo "<td>".$fila['complert']."%</td>";
                         echo "<td>
                                 <form name='completar' action='completarTasca.php' method='POST'>								
                                     <input type='hidden' name='id' value='".$fila['id']."'>
-                                    <input type='hidden' name='complert' value='".$fila['complert']."'>
+                                    <input type='number' min='0' max='100' name='complert' value='".$fila['complert']."'>
                                     <input type='submit' value='Completar'>
                                 </form>
                               </td>";
